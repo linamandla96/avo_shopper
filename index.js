@@ -17,12 +17,20 @@ app.use(express.static('public'));
 const Pool = pg.Pool;
 require('dotenv').config()
 
-const connectionString = process.env.DATABASE_URL || 'postgresql://codex:pg123@localhost:5432/avocados';
+let useSSL = false;
+let local = process.env.LOCAL || false;
+if (process.env.DATABASE_URL && !local) {
+    useSSL = true;
+}
+
 
 const pool = new Pool({
-    connectionString
+    connectionString: process.env.DATABASE_URL || 'postgresql://codex:pg123@localhost:5432/greeting_app',
+    ssl: {
+        useSSL,
+        rejectUnauthorized: false
+    }
 });
-
 
 // add more middleware to allow for templating support
 
