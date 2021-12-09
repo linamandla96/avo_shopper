@@ -41,7 +41,7 @@ app.get('/', async function(req, res) {
 	
 });
 
-app.get('/listavo', async function(req, res){
+app.get('/listavoshop', async function(req, res){
 	
 		const avocadolist = await avocado.listShops()
 	res.render('shoplist',{
