@@ -17,7 +17,6 @@ module.exports = function(pool) {
 		const result = await pool.query(`select * from avo_deal where shop_id = $1`, [shopId]);
 		return result.rows;
 	}
-
 	async function topFiveDeals() {
 		const bestPriceSQL = `select name as shop_name, price, qty, round((price/qty), 2) as unit_price from avo_deal 
 		join shop on shop.id = avo_deal.shop_id 

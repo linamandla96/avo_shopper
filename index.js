@@ -1,5 +1,8 @@
 const express = require('express');
 const exphbs  = require('express-handlebars');
+const pg = require('pg');
+let avocadoshops = require("./avo-shopper");
+
 
 const app = express();
 const PORT =  process.env.PORT || 3019;
@@ -11,18 +14,67 @@ app.use(express.urlencoded({ extended: false }));
 // enable the static folder...
 app.use(express.static('public'));
 
+const Pool = pg.Pool;
+require('dotenv').config()
+
+const connectionString = process.env.DATABASE_URL || 'postgresql://codex:pg123@localhost:5432/avocados';
+
+const pool = new Pool({
+    connectionString
+});
+
+
 // add more middleware to allow for templating support
 
 app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
-
 let counter = 0;
 
-app.get('/', function(req, res) {
+const avocado = avocadoshops(pool) 
+app.get('/', async function(req, res) {
+	
+		const avocados = await avocado.topFiveDeals()
 	res.render('index', {
-		counter
+		avocados
 	});
+	
+	
 });
+
+app.get('/listavo', async function(req, res){
+	
+		const avocadolist = await avocado.listShops()
+	res.render('shoplist',{
+		avocadolist
+	});
+	
+	
+});
+app.get('/addavo', async function(req,res){
+	
+		res.render('show-avolist');
+	
+	
+})
+
+
+app.post('/avodeals', async function(req,res){
+	
+		console.log(req.body.shop_name)
+	 await avocado.createShop(req.body.shop_name)
+
+	res.render('show-avolist');
+	
+	
+})
+
+
+
+
+
+
+
+
 
 // start  the server and start listening for HTTP request on the PORT number specified...
 app.listen(PORT, function() {

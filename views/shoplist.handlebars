@@ -1,0 +1,29 @@
+<div class="deals">
+
+<h2>Add A Deal</h2>
+    <form action="/avodeals" method="post">
+    <div>
+
+        <label for="avodeal">Choose Shop:</label>
+
+
+            <h3>Choose a shop</h3>
+
+            {{#each shoplist}}
+
+            <option value="{{name}}">{{name}}</option>
+
+            {{/each}}
+
+        
+
+    </div>
+
+    <div>
+		<label for="qty">Enter</label>
+		<input type="text" name="avodealers">
+	</div>
+
+
+    </form>
+</div>
