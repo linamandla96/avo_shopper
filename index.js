@@ -51,7 +51,7 @@ app.get('/listavoshop', async function(req, res){
 	
 });
 app.get('/addavo', async function(req,res){
-	
+	    await avocado.dealsForShop()
 		res.render('show-avolist');
 	
 	
